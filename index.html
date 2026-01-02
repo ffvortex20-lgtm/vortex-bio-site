@@ -2,37 +2,38 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Criar Link</title>
+<title>Criar Bio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <style>
-body{margin:0;font-family:Arial;background:#000;color:#fff}
+body{margin:0;background:#000;color:#fff;font-family:Arial}
 #particles{position:fixed;inset:0}
 .container{
-  position:relative;
   max-width:450px;
   margin:auto;
-  padding:50px 20px;
-  text-align:center;
+  padding:40px 20px;
+  position:relative;
+  z-index:2;
 }
-input,button{
+input,select,button{
   width:100%;
   padding:14px;
-  margin:10px 0;
+  margin:8px 0;
   border-radius:8px;
   border:none;
   font-size:1rem;
 }
-input{background:#111;color:#fff}
+input,select{background:#111;color:white}
 button{
   background:#e31b23;
   color:white;
   font-weight:bold;
   cursor:pointer;
 }
-button:hover{opacity:.9}
+h2{text-align:center}
+label{font-size:.9rem;color:#ccc}
 </style>
 </head>
 
@@ -40,43 +41,65 @@ button:hover{opacity:.9}
 <div id="particles"></div>
 
 <div class="container">
-  <h1>Gerar Link 🔗</h1>
+<h2>🔗 Criar Link</h2>
 
-  <input id="titulo" placeholder="Título da tarefa">
-  <input id="canal" placeholder="Link para visitar">
-  <input id="download" placeholder="Link do download">
+<input id="nome" placeholder="Nome da bio">
+<input id="foto" placeholder="Link da foto">
 
-  <button onclick="gerar()">Gerar Link</button>
+<label>Cor dos botões</label>
+<input type="color" id="corBtn" value="#e31b23">
+
+<label>Cor das partículas</label>
+<input type="color" id="corSnow" value="#8a2be2">
+
+<h3>Redes sociais</h3>
+<input id="youtube" placeholder="YouTube">
+<input id="instagram" placeholder="Instagram">
+<input id="telegram" placeholder="Telegram">
+<input id="tiktok" placeholder="TikTok">
+<input id="kwai" placeholder="Kwai">
+<input id="grupo" placeholder="WhatsApp Grupo">
+<input id="canal" placeholder="WhatsApp Canal">
+
+<input id="download" placeholder="Link do download">
+
+<button onclick="gerar()">Gerar Link</button>
 </div>
 
 <script>
 function gerar(){
-  const t = titulo.value.trim();
-  const c = canal.value.trim();
-  const d = download.value.trim();
+  const dados = {
+    nome: nome.value,
+    foto: foto.value,
+    cor: corBtn.value,
+    snow: corSnow.value,
+    redes:{
+      youtube: youtube.value,
+      instagram: instagram.value,
+      telegram: telegram.value,
+      tiktok: tiktok.value,
+      kwai: kwai.value,
+      grupo: grupo.value,
+      canal: canal.value
+    },
+    download: download.value
+  };
 
-  if(!t || !c || !d){
-    alert("Preencha tudo!");
-    return;
-  }
-
-  const url =
-    location.origin +
+  const link = location.origin +
     location.pathname.replace("index.html","") +
-    "concluir.html?titulo=" + encodeURIComponent(t) +
-    "&canalLink=" + encodeURIComponent(c) +
-    "&downloadLink=" + encodeURIComponent(d);
+    "concluir.html?data=" + btoa(JSON.stringify(dados));
 
-  navigator.clipboard.writeText(url);
+  navigator.clipboard.writeText(link);
   alert("✅ Link copiado!");
 }
 
 particlesJS("particles",{
   particles:{
-    number:{value:80},
-    color:{value:"#e31b23"},
-    line_linked:{enable:true,color:"#e31b23"},
-    move:{enable:true,speed:2}
+    number:{value:60},
+    size:{value:2},
+    color:{value:"#8a2be2"},
+    line_linked:{enable:true,color:"#fff"},
+    move:{enable:true,speed:1.5}
   }
 });
 </script>
