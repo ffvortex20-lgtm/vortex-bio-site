@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Criar Bio</title>
+<title>Criar Link</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <style>
@@ -17,23 +16,17 @@ body{margin:0;background:#000;color:#fff;font-family:Arial}
   position:relative;
   z-index:2;
 }
-input,select,button{
+input,button{
   width:100%;
   padding:14px;
   margin:8px 0;
   border-radius:8px;
   border:none;
-  font-size:1rem;
 }
-input,select{background:#111;color:white}
-button{
-  background:#e31b23;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
+input{background:#111;color:#fff}
+button{background:#e31b23;color:#fff;font-weight:bold;cursor:pointer}
 h2{text-align:center}
-label{font-size:.9rem;color:#ccc}
+label{color:#aaa;font-size:.9rem}
 </style>
 </head>
 
@@ -41,18 +34,15 @@ label{font-size:.9rem;color:#ccc}
 <div id="particles"></div>
 
 <div class="container">
-<h2>🔗 Criar Link</h2>
+<h2>Gerar Link</h2>
 
-<input id="nome" placeholder="Nome da bio">
+<input id="nome" placeholder="Nome">
 <input id="foto" placeholder="Link da foto">
-
 <label>Cor dos botões</label>
 <input type="color" id="corBtn" value="#e31b23">
-
-<label>Cor das partículas</label>
+<label>Cor do snow</label>
 <input type="color" id="corSnow" value="#8a2be2">
 
-<h3>Redes sociais</h3>
 <input id="youtube" placeholder="YouTube">
 <input id="instagram" placeholder="Instagram">
 <input id="telegram" placeholder="Telegram">
@@ -68,12 +58,12 @@ label{font-size:.9rem;color:#ccc}
 
 <script>
 function gerar(){
-  const dados = {
+  const data = {
     nome: nome.value,
     foto: foto.value,
     cor: corBtn.value,
     snow: corSnow.value,
-    redes:{
+    redes: {
       youtube: youtube.value,
       instagram: instagram.value,
       telegram: telegram.value,
@@ -85,9 +75,11 @@ function gerar(){
     download: download.value
   };
 
-  const link = location.origin +
+  const link =
+    location.origin +
     location.pathname.replace("index.html","") +
-    "concluir.html?data=" + btoa(JSON.stringify(dados));
+    "concluir.html?data=" +
+    encodeURIComponent(btoa(JSON.stringify(data)));
 
   navigator.clipboard.writeText(link);
   alert("✅ Link copiado!");
@@ -95,11 +87,11 @@ function gerar(){
 
 particlesJS("particles",{
   particles:{
-    number:{value:60},
+    number:{value:50},
     size:{value:2},
     color:{value:"#8a2be2"},
     line_linked:{enable:true,color:"#fff"},
-    move:{enable:true,speed:1.5}
+    move:{enable:true,speed:1.3}
   }
 });
 </script>
