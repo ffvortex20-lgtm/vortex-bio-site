@@ -9,46 +9,49 @@
 body{
   margin:0;
   background:#000;
-  color:#fff;
+  color:white;
   font-family:Arial;
   text-align:center;
 }
 .box{
-  max-width:400px;
+  max-width:420px;
   margin:40px auto;
   padding:20px;
 }
 button,a{
-  display:block;
-  margin:10px auto;
-  padding:12px;
   width:100%;
+  margin:8px 0;
+  padding:12px;
   border:none;
   border-radius:6px;
   background:#444;
   color:white;
-  text-decoration:none;
   font-weight:bold;
 }
-#download{display:none;background:green;}
-img{width:120px;border-radius:50%;margin:10px}
+button:disabled{
+  opacity:.4;
+}
+#download{
+  display:none;
+  background:green;
+}
+img{
+  width:120px;
+  border-radius:50%;
+  margin:10px;
+}
 </style>
 </head>
 
 <body>
+
 <div class="box">
   <h2 id="titulo"></h2>
-  <img id="foto">
+  <img id="foto" style="display:none">
 
-  <button onclick="abrir(youtube)">YouTube</button>
-  <button onclick="abrir(instagram)">Instagram</button>
-  <button onclick="abrir(telegram)">Telegram</button>
-  <button onclick="abrir(tiktok)">TikTok</button>
-  <button onclick="abrir(kwai)">Kwai</button>
-  <button onclick="abrir(grupo)">WhatsApp Grupo</button>
-  <button onclick="abrir(canal)">WhatsApp Canal</button>
+  <div id="botoes"></div>
 
-  <a id="download">⬇ Download</a>
+  <a id="download">⬇ BAIXAR</a>
 </div>
 
 <script>
@@ -56,42 +59,53 @@ const id = location.hash.replace("#","");
 const dados = JSON.parse(localStorage.getItem("bio_"+id));
 
 if(!dados){
-  document.body.innerHTML="Link inválido";
+  document.body.innerHTML = "❌ Link inválido";
   throw 0;
 }
 
 titulo.innerText = dados.titulo;
-document.body.style.background = "#000";
 
-if(dados.foto) foto.src = dados.foto;
+if(dados.foto){
+  foto.src = dados.foto;
+  foto.style.display = "block";
+}
+
+const redes = [
+  ["YouTube", dados.youtube],
+  ["Instagram", dados.instagram],
+  ["Telegram", dados.telegram],
+  ["TikTok", dados.tiktok],
+  ["Kwai", dados.kwai],
+  ["WhatsApp Grupo", dados.grupo],
+  ["WhatsApp Canal", dados.canal],
+];
 
 let total = 0;
 let feitos = 0;
 
-const links = ["youtube","instagram","telegram","tiktok","kwai","grupo","canal"];
+const container = document.getElementById("botoes");
 
-links.forEach(l=>{
-  if(dados[l]) total++;
+redes.forEach(r=>{
+  if(r[1]){
+    total++;
+    const btn = document.createElement("button");
+    btn.innerText = r[0];
+    btn.onclick = () => abrir(r[1]);
+    container.appendChild(btn);
+  }
 });
 
 function abrir(link){
-  if(!link) return;
-  window.open(link,"_blank");
+  window.open(link, "_blank");
   feitos++;
 
   if(feitos >= total){
-    download.style.display="block";
-    download.href = dados.download;
+    const d = document.getElementById("download");
+    d.href = dados.download;
+    d.style.display = "block";
   }
 }
-
-var youtube=dados.youtube,
-instagram=dados.instagram,
-telegram=dados.telegram,
-tiktok=dados.tiktok,
-kwai=dados.kwai,
-grupo=dados.grupo,
-canal=dados.canal;
 </script>
+
 </body>
 </html>
