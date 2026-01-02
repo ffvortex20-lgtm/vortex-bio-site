@@ -6,65 +6,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;background:#000;color:white;font-family:Arial;text-align:center}
-.container{max-width:420px;margin:auto;padding:30px}
-img{width:120px;height:120px;border-radius:50%;border:3px solid white}
+body{
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial;
+  text-align:center;
+}
+.box{
+  max-width:400px;
+  margin:40px auto;
+  padding:20px;
+}
 button,a{
   display:block;
-  width:100%;
   margin:10px auto;
-  padding:14px;
-  border-radius:8px;
+  padding:12px;
+  width:100%;
   border:none;
-  font-weight:bold
+  border-radius:6px;
+  background:#444;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
 }
-.btn{background:#333;color:white}
-.btn.done{background:green}
-#download{display:none;background:green;color:white}
+#download{display:none;background:green;}
+img{width:120px;border-radius:50%;margin:10px}
 </style>
 </head>
 
 <body>
-<div class="container">
-<img id="foto">
-<h2 id="nome"></h2>
+<div class="box">
+  <h2 id="titulo"></h2>
+  <img id="foto">
 
-<div id="lista"></div>
+  <button onclick="abrir(youtube)">YouTube</button>
+  <button onclick="abrir(instagram)">Instagram</button>
+  <button onclick="abrir(telegram)">Telegram</button>
+  <button onclick="abrir(tiktok)">TikTok</button>
+  <button onclick="abrir(kwai)">Kwai</button>
+  <button onclick="abrir(grupo)">WhatsApp Grupo</button>
+  <button onclick="abrir(canal)">WhatsApp Canal</button>
 
-<a id="download">⬇ Baixar Agora</a>
+  <a id="download">⬇ Download</a>
 </div>
 
 <script>
-const data = JSON.parse(atob(new URLSearchParams(location.search).get("data")));
+const id = location.hash.replace("#","");
+const dados = JSON.parse(localStorage.getItem("bio_"+id));
 
-document.getElementById("nome").innerText = data.nome;
-document.getElementById("foto").src = data.foto || "https://i.imgur.com/8Km9tLL.png";
+if(!dados){
+  document.body.innerHTML="Link inválido";
+  throw 0;
+}
 
-let total = 0, feitos = 0;
+titulo.innerText = dados.titulo;
+document.body.style.background = "#000";
 
-for(let r in data.redes){
-  if(data.redes[r]){
-    total++;
-    const b = document.createElement("button");
-    b.className = "btn";
-    b.innerText = "Visitar " + r;
+if(dados.foto) foto.src = dados.foto;
 
-    b.onclick = () => {
-      window.open(data.redes[r], "_blank");
-      b.disabled = true;
-      b.classList.add("done");
-      feitos++;
+let total = 0;
+let feitos = 0;
 
-      if(feitos === total){
-        const d = document.getElementById("download");
-        d.href = data.download;
-        d.style.display = "block";
-      }
-    };
+const links = ["youtube","instagram","telegram","tiktok","kwai","grupo","canal"];
 
-    document.getElementById("lista").appendChild(b);
+links.forEach(l=>{
+  if(dados[l]) total++;
+});
+
+function abrir(link){
+  if(!link) return;
+  window.open(link,"_blank");
+  feitos++;
+
+  if(feitos >= total){
+    download.style.display="block";
+    download.href = dados.download;
   }
 }
+
+var youtube=dados.youtube,
+instagram=dados.instagram,
+telegram=dados.telegram,
+tiktok=dados.tiktok,
+kwai=dados.kwai,
+grupo=dados.grupo,
+canal=dados.canal;
 </script>
 </body>
 </html>
