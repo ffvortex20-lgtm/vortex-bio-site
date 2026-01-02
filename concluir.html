@@ -6,16 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;background:#000;color:white;font-family:Arial;text-align:center}
+body{margin:0;background:#000;color:#fff;font-family:Arial;text-align:center}
 .container{max-width:420px;margin:auto;padding:30px}
 img{width:120px;height:120px;border-radius:50%;border:3px solid white}
 button,a{
-  display:block;width:100%;margin:10px auto;
-  padding:14px;border-radius:8px;
-  border:none;font-weight:bold
+  display:block;
+  width:100%;
+  margin:10px auto;
+  padding:14px;
+  border-radius:8px;
+  border:none;
+  font-weight:bold;
 }
 .btn{background:#333;color:white}
-.btn.active{background:green}
+.btn.done{background:green}
 #download{display:none;background:green;color:white}
 </style>
 </head>
@@ -25,42 +29,41 @@ button,a{
 <img id="foto">
 <h2 id="nome"></h2>
 
-<div id="botoes"></div>
+<div id="lista"></div>
 
-<a id="download">⬇ Baixar agora</a>
+<a id="download">⬇ Baixar Agora</a>
 </div>
 
 <script>
-const d = JSON.parse(atob(new URLSearchParams(location.search).get("data")));
+const dados = JSON.parse(atob(new URLSearchParams(location.search).get("data")));
 
-document.body.style.setProperty("--cor", d.cor);
-document.getElementById("nome").innerText = d.nome;
-document.getElementById("foto").src = d.foto;
+document.getElementById("nome").innerText = dados.nome;
+document.getElementById("foto").src = dados.foto;
 
 let total = 0;
 let feitos = 0;
 
-const redes = d.redes;
-const box = document.getElementById("botoes");
-
-for(let k in redes){
-  if(redes[k]){
+for(let rede in dados.redes){
+  if(dados.redes[rede]){
     total++;
-    const b = document.createElement("button");
-    b.innerText = "Visitar " + k;
-    b.className = "btn";
-    b.onclick = () => {
-      window.open(redes[k], "_blank");
-      b.disabled = true;
-      b.classList.add("active");
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.innerText = "Visitar " + rede;
+
+    btn.onclick = () => {
+      window.open(dados.redes[rede], "_blank");
+      btn.disabled = true;
+      btn.classList.add("done");
       feitos++;
+
       if(feitos === total){
-        const dl = document.getElementById("download");
-        dl.style.display = "block";
-        dl.href = d.download;
+        const d = document.getElementById("download");
+        d.href = dados.download;
+        d.style.display = "block";
       }
     };
-    box.appendChild(b);
+
+    document.getElementById("lista").appendChild(btn);
   }
 }
 </script>
