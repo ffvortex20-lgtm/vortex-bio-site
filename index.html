@@ -2,110 +2,110 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Concluir</title>
+<title>Criar Bio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <style>
 body{
   margin:0;
-  background:#000;
-  color:white;
   font-family:Arial;
-  text-align:center;
+  background:#000;
+  color:#fff;
 }
+#particles-js{position:fixed;inset:0}
 .box{
+  position:relative;
+  z-index:2;
   max-width:420px;
   margin:40px auto;
+  background:#111;
   padding:20px;
+  border-radius:12px;
 }
-button,a{
+input,button{
   width:100%;
-  margin:8px 0;
   padding:12px;
-  border:none;
+  margin:6px 0;
   border-radius:6px;
-  background:#444;
+  border:none;
+}
+button{
+  background:#e31b23;
   color:white;
   font-weight:bold;
-}
-button:disabled{
-  opacity:.4;
-}
-#download{
-  display:none;
-  background:green;
-}
-img{
-  width:120px;
-  border-radius:50%;
-  margin:10px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
+<div id="particles-js"></div>
 
 <div class="box">
-  <h2 id="titulo"></h2>
-  <img id="foto" style="display:none">
+  <h2>Criar Link</h2>
 
-  <div id="botoes"></div>
+  <input id="titulo" placeholder="Título">
+  <input type="color" id="cor" value="#e31b23">
 
-  <a id="download">⬇ BAIXAR</a>
+  <input id="foto" placeholder="Link da foto (opcional)">
+  <input id="youtube" placeholder="YouTube">
+  <input id="instagram" placeholder="Instagram">
+  <input id="telegram" placeholder="Telegram">
+  <input id="tiktok" placeholder="TikTok">
+  <input id="kwai" placeholder="Kwai">
+  <input id="grupo" placeholder="WhatsApp Grupo">
+  <input id="canal" placeholder="WhatsApp Canal">
+
+  <input id="download" placeholder="Link do Download">
+
+  <button onclick="gerar()">GERAR LINK</button>
 </div>
 
 <script>
-const id = location.hash.replace("#","");
-const dados = JSON.parse(localStorage.getItem("bio_"+id));
-
-if(!dados){
-  document.body.innerHTML = "❌ Link inválido";
-  throw 0;
-}
-
-titulo.innerText = dados.titulo;
-
-if(dados.foto){
-  foto.src = dados.foto;
-  foto.style.display = "block";
-}
-
-const redes = [
-  ["YouTube", dados.youtube],
-  ["Instagram", dados.instagram],
-  ["Telegram", dados.telegram],
-  ["TikTok", dados.tiktok],
-  ["Kwai", dados.kwai],
-  ["WhatsApp Grupo", dados.grupo],
-  ["WhatsApp Canal", dados.canal],
-];
-
-let total = 0;
-let feitos = 0;
-
-const container = document.getElementById("botoes");
-
-redes.forEach(r=>{
-  if(r[1]){
-    total++;
-    const btn = document.createElement("button");
-    btn.innerText = r[0];
-    btn.onclick = () => abrir(r[1]);
-    container.appendChild(btn);
+particlesJS("particles-js",{
+  particles:{
+    number:{value:40},
+    size:{value:2},
+    color:{value:"#fff"},
+    line_linked:{enable:false},
+    move:{speed:1}
   }
 });
 
-function abrir(link){
-  window.open(link, "_blank");
-  feitos++;
-
-  if(feitos >= total){
-    const d = document.getElementById("download");
-    d.href = dados.download;
-    d.style.display = "block";
+function gerar(){
+  if(!titulo.value || !download.value){
+    alert("Preencha o título e o download!");
+    return;
   }
+
+  const id = Math.random().toString(36).substring(2,8);
+
+  const dados = {
+    titulo: titulo.value,
+    cor: cor.value,
+    foto: foto.value,
+    youtube: youtube.value,
+    instagram: instagram.value,
+    telegram: telegram.value,
+    tiktok: tiktok.value,
+    kwai: kwai.value,
+    grupo: grupo.value,
+    canal: canal.value,
+    download: download.value
+  };
+
+  localStorage.setItem("bio_"+id, JSON.stringify(dados));
+
+  const link =
+    location.origin +
+    location.pathname.replace("index.html","") +
+    "concluir.html#" + id;
+
+  navigator.clipboard.writeText(link);
+  alert("✅ Link copiado:\n" + link);
 }
 </script>
-
 </body>
 </html>
