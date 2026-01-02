@@ -2,117 +2,110 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Criar Link</title>
+<title>Criar Bio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <style>
-body{margin:0;background:#000;color:#fff;font-family:Arial}
-#particles{position:fixed;inset:0}
-.container{
-  max-width:450px;
-  margin:auto;
-  padding:40px 20px;
+body{
+  margin:0;
+  font-family:Arial;
+  background:#000;
+  color:#fff;
+}
+#particles-js{position:fixed;inset:0}
+.box{
   position:relative;
   z-index:2;
+  max-width:400px;
+  margin:40px auto;
+  background:#111;
+  padding:20px;
+  border-radius:10px;
 }
 input,button{
   width:100%;
-  padding:14px;
-  margin:8px 0;
-  border-radius:8px;
+  margin:6px 0;
+  padding:12px;
+  border-radius:6px;
   border:none;
 }
-input{background:#111;color:#fff}
-button{background:#e31b23;color:#fff;font-weight:bold}
-h2{text-align:center}
-label{font-size:.9rem;color:#ccc}
+button{
+  background:#e31b23;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
 </style>
 </head>
-
 <body>
-<div id="particles"></div>
 
-<div class="container">
-<h2>Criar Bio</h2>
+<div id="particles-js"></div>
 
-<input id="nome" placeholder="Nome">
+<div class="box">
+  <h2>Criar Link</h2>
 
-<label>Foto (link ou arquivo)</label>
-<input id="fotoLink" placeholder="Link da foto (opcional)">
-<input type="file" id="fotoArquivo" accept="image/*">
+  <input id="titulo" placeholder="Título">
+  <input type="color" id="cor" value="#e31b23">
 
-<label>Cor dos botões</label>
-<input type="color" id="corBtn" value="#e31b23">
+  <input id="foto" placeholder="Link da foto (opcional)">
+  <input type="file" id="fotoFile">
 
-<label>Cor do snow</label>
-<input type="color" id="corSnow" value="#8a2be2">
+  <input id="youtube" placeholder="YouTube">
+  <input id="instagram" placeholder="Instagram">
+  <input id="telegram" placeholder="Telegram">
+  <input id="tiktok" placeholder="TikTok">
+  <input id="kwai" placeholder="Kwai">
+  <input id="grupo" placeholder="WhatsApp Grupo">
+  <input id="canal" placeholder="WhatsApp Canal">
 
-<input id="youtube" placeholder="YouTube">
-<input id="instagram" placeholder="Instagram">
-<input id="telegram" placeholder="Telegram">
-<input id="tiktok" placeholder="TikTok">
-<input id="kwai" placeholder="Kwai">
-<input id="grupo" placeholder="WhatsApp Grupo">
-<input id="canal" placeholder="WhatsApp Canal">
+  <input id="download" placeholder="Link de download">
 
-<input id="download" placeholder="Link do download">
-
-<button onclick="gerar()">Gerar Link</button>
+  <button onclick="gerar()">GERAR LINK</button>
 </div>
 
 <script>
-function gerar(){
-  const file = document.getElementById("fotoArquivo").files[0];
-  const linkFoto = document.getElementById("fotoLink").value;
-
-  if(file){
-    const reader = new FileReader();
-    reader.onload = () => montar(reader.result);
-    reader.readAsDataURL(file);
-  } else {
-    montar(linkFoto || "");
+particlesJS("particles-js",{
+  particles:{
+    number:{value:40},
+    size:{value:2},
+    move:{speed:1},
+    color:{value:"#fff"},
+    line_linked:{enable:false}
   }
-}
+});
 
-function montar(foto){
-  const data = {
-    nome: nome.value,
-    foto: foto,
-    cor: corBtn.value,
-    snow: corSnow.value,
-    redes:{
-      youtube: youtube.value,
-      instagram: instagram.value,
-      telegram: telegram.value,
-      tiktok: tiktok.value,
-      kwai: kwai.value,
-      grupo: grupo.value,
-      canal: canal.value
-    },
+function gerar(){
+  const id = Math.random().toString(36).substring(2,8);
+
+  const dados = {
+    titulo: titulo.value,
+    cor: cor.value,
+    foto: foto.value,
+    youtube: youtube.value,
+    instagram: instagram.value,
+    telegram: telegram.value,
+    tiktok: tiktok.value,
+    kwai: kwai.value,
+    grupo: grupo.value,
+    canal: canal.value,
     download: download.value
   };
 
-  const url =
-    location.origin +
-    location.pathname.replace("index.html","") +
-    "concluir.html?data=" +
-    encodeURIComponent(btoa(JSON.stringify(data)));
-
-  navigator.clipboard.writeText(url);
-  alert("✅ Link copiado!");
-}
-
-particlesJS("particles",{
-  particles:{
-    number:{value:50},
-    size:{value:2},
-    color:{value:"#8a2be2"},
-    line_linked:{enable:true,color:"#fff"},
-    move:{enable:true,speed:1.2}
+  if(!dados.titulo || !dados.download){
+    alert("Preencha o título e o download");
+    return;
   }
-});
+
+  localStorage.setItem("bio_"+id, JSON.stringify(dados));
+
+  const link = location.origin +
+    location.pathname.replace("index.html","") +
+    "concluir.html#" + id;
+
+  navigator.clipboard.writeText(link);
+  alert("✅ Link copiado:\n"+link);
+}
 </script>
 </body>
 </html>
