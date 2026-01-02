@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;background:#000;color:#fff;font-family:Arial;text-align:center}
+body{margin:0;background:#000;color:white;font-family:Arial;text-align:center}
 .container{max-width:420px;margin:auto;padding:30px}
 img{width:120px;height:120px;border-radius:50%;border:3px solid white}
 button,a{
@@ -16,7 +16,7 @@ button,a{
   padding:14px;
   border-radius:8px;
   border:none;
-  font-weight:bold;
+  font-weight:bold
 }
 .btn{background:#333;color:white}
 .btn.done{background:green}
@@ -35,35 +35,34 @@ button,a{
 </div>
 
 <script>
-const dados = JSON.parse(atob(new URLSearchParams(location.search).get("data")));
+const data = JSON.parse(atob(new URLSearchParams(location.search).get("data")));
 
-document.getElementById("nome").innerText = dados.nome;
-document.getElementById("foto").src = dados.foto;
+document.getElementById("nome").innerText = data.nome;
+document.getElementById("foto").src = data.foto || "https://i.imgur.com/8Km9tLL.png";
 
-let total = 0;
-let feitos = 0;
+let total = 0, feitos = 0;
 
-for(let rede in dados.redes){
-  if(dados.redes[rede]){
+for(let r in data.redes){
+  if(data.redes[r]){
     total++;
-    const btn = document.createElement("button");
-    btn.className = "btn";
-    btn.innerText = "Visitar " + rede;
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.innerText = "Visitar " + r;
 
-    btn.onclick = () => {
-      window.open(dados.redes[rede], "_blank");
-      btn.disabled = true;
-      btn.classList.add("done");
+    b.onclick = () => {
+      window.open(data.redes[r], "_blank");
+      b.disabled = true;
+      b.classList.add("done");
       feitos++;
 
       if(feitos === total){
         const d = document.getElementById("download");
-        d.href = dados.download;
+        d.href = data.download;
         d.style.display = "block";
       }
     };
 
-    document.getElementById("lista").appendChild(btn);
+    document.getElementById("lista").appendChild(b);
   }
 }
 </script>
