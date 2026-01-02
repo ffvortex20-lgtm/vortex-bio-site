@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Criar Link</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<style>
+body{margin:0;font-family:Arial;background:#000;color:#fff}
+#particles{position:fixed;inset:0}
+.container{
+  position:relative;
+  max-width:450px;
+  margin:auto;
+  padding:50px 20px;
+  text-align:center;
+}
+input,button{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
+  font-size:1rem;
+}
+input{background:#111;color:#fff}
+button{
+  background:#e31b23;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+</style>
+</head>
+
+<body>
+<div id="particles"></div>
+
+<div class="container">
+  <h1>Gerar Link 🔗</h1>
+
+  <input id="titulo" placeholder="Título da tarefa">
+  <input id="canal" placeholder="Link para visitar">
+  <input id="download" placeholder="Link do download">
+
+  <button onclick="gerar()">Gerar Link</button>
+</div>
+
+<script>
+function gerar(){
+  const t = titulo.value.trim();
+  const c = canal.value.trim();
+  const d = download.value.trim();
+
+  if(!t || !c || !d){
+    alert("Preencha tudo!");
+    return;
+  }
+
+  const url =
+    location.origin +
+    location.pathname.replace("index.html","") +
+    "concluir.html?titulo=" + encodeURIComponent(t) +
+    "&canalLink=" + encodeURIComponent(c) +
+    "&downloadLink=" + encodeURIComponent(d);
+
+  navigator.clipboard.writeText(url);
+  alert("✅ Link copiado!");
+}
+
+particlesJS("particles",{
+  particles:{
+    number:{value:80},
+    color:{value:"#e31b23"},
+    line_linked:{enable:true,color:"#e31b23"},
+    move:{enable:true,speed:2}
+  }
+});
+</script>
+</body>
+</html>
